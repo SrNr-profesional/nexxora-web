@@ -29,7 +29,7 @@ export default function TermsPage() {
 
             <h2 className="text-lg font-semibold text-white">2. Demostración interactiva</h2>
             <p>
-              La demostración interactiva presentada en el sitio ("Distrito Burger") utiliza datos ficticios
+              La demostración interactiva presentada en el sitio (&quot;Distrito Burger&quot;) utiliza datos ficticios
               con fines exclusivamente ilustrativos y no representa un cliente real de {SITE.name}.
             </p>
 
