@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 /**
  * Isotipo de Nexxora: archivo de marca real provisto por el cliente
  * (public/logo-icon.png, recortado del logo original con fondo transparente).
- * El wordmark se mantiene como texto HTML para conservar la tipografia y los
+ * El wordmark se mantiene como texto HTML para conservar la tipografía y los
  * efectos de glow consistentes con el resto del sitio.
  */
 export default function Logo({ className, withText = true }: { className?: string; withText?: boolean }) {
