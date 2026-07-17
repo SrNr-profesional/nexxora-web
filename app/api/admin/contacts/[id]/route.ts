@@ -4,6 +4,7 @@ import { mapContactRow } from "@/lib/mapContact";
 import { CONTACT_STATUS_LABELS } from "@/types/contact";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
