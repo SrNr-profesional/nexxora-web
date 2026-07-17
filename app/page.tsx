@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
@@ -24,7 +25,9 @@ export default function HomePage() {
         <HowItWorks />
         <Comparison />
         <Benefits />
-        <DiagnosticForm />
+        <Suspense fallback={null}>
+          <DiagnosticForm />
+        </Suspense>
         <Testimonials />
         <FAQ />
         <FinalCTA />
