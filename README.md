@@ -149,4 +149,4 @@ middleware.ts              Protección de rutas /admin y /api/admin
 
 La sección de testimonios está preparada para el futuro pero, siguiendo el requerimiento del proyecto, no
 incluye testimonios ni clientes inventados. Cuando existan casos reales, reemplazá el contenido de
-`components/sections/Testi
+`components/sections/Testimonials.tsx`.
