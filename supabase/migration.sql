@@ -74,4 +74,4 @@ alter table public.contacts enable row level security;
 -- No se crean policies para "anon" ni "authenticated": por defecto, sin policies,
 -- RLS bloquea todo acceso que no sea con la Service Role Key.
 
-comment on table public.contacts is 'Diagnósticos de restaurantes enviados desde la web de Nexxora.'
+comment on table public.contacts is 'Diagnósticos de restaurantes enviados desde la web de Nexxora.';
