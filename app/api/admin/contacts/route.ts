@@ -3,6 +3,7 @@ import { getSupabaseAdminClient } from "@/lib/supabase/server";
 import { mapContactRow } from "@/lib/mapContact";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {
