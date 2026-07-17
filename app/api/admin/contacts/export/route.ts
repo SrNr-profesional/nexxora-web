@@ -3,6 +3,7 @@ import { getSupabaseAdminClient } from "@/lib/supabase/server";
 import { mapContactRow } from "@/lib/mapContact";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 function csvEscape(value: unknown) {
   const str = Array.isArray(value) ? value.join("; ") : String(value ?? "");
