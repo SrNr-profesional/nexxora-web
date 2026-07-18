@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, TextareaHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 interface BaseProps {
@@ -8,21 +8,17 @@ interface BaseProps {
   hint?: string;
 }
 
-export function TextField({
-  label,
-  error,
-  required,
-  hint,
-  className,
-  id,
-  ...props
-}: BaseProps & InputHTMLAttributes<HTMLInputElement>) {
+export const TextField = forwardRef<
+  HTMLInputElement,
+  BaseProps & InputHTMLAttributes<HTMLInputElement>
+>(function TextField({ label, error, required, hint, className, id, ...props }, ref) {
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-slate-300">
         {label} {required && <span className="text-brand-cyan">*</span>}
       </label>
       <input
+        ref={ref}
         id={id}
         className={cn(
           "focus-ring w-full rounded-xl border bg-white/[0.04] px-4 py-3 text-sm text-white placeholder:text-slate-500 transition-colors",
@@ -41,23 +37,19 @@ export function TextField({
       )}
     </div>
   );
-}
+});
 
-export function TextAreaField({
-  label,
-  error,
-  required,
-  hint,
-  className,
-  id,
-  ...props
-}: BaseProps & TextareaHTMLAttributes<HTMLTextAreaElement>) {
+export const TextAreaField = forwardRef<
+  HTMLTextAreaElement,
+  BaseProps & TextareaHTMLAttributes<HTMLTextAreaElement>
+>(function TextAreaField({ label, error, required, hint, className, id, ...props }, ref) {
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-slate-300">
         {label} {required && <span className="text-brand-cyan">*</span>}
       </label>
       <textarea
+        ref={ref}
         id={id}
         rows={4}
         className={cn(
@@ -77,4 +69,4 @@ export function TextAreaField({
       )}
     </div>
   );
-}
+});

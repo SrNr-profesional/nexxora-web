@@ -1,4 +1,4 @@
-import { SelectHTMLAttributes } from "react";
+import { forwardRef, SelectHTMLAttributes } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -10,16 +10,10 @@ interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
   placeholder?: string;
 }
 
-export default function SelectField({
-  label,
-  error,
-  required,
-  options,
-  placeholder = "Seleccioná una opción",
-  className,
-  id,
-  ...props
-}: Props) {
+const SelectField = forwardRef<HTMLSelectElement, Props>(function SelectField(
+  { label, error, required, options, placeholder = "Seleccioná una opción", className, id, ...props },
+  ref
+) {
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-slate-300">
@@ -27,6 +21,7 @@ export default function SelectField({
       </label>
       <div className="relative">
         <select
+          ref={ref}
           id={id}
           className={cn(
             "focus-ring w-full appearance-none rounded-xl border bg-white/[0.04] px-4 py-3 text-sm text-white transition-colors",
@@ -55,4 +50,6 @@ export default function SelectField({
       )}
     </div>
   );
-}
+});
+
+export default SelectField;
