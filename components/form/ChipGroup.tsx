@@ -37,9 +37,9 @@ export function ChipMultiGroup({
               onClick={() => toggle(opt)}
               aria-pressed={active}
               className={cn(
-                "focus-ring flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-medium transition-all duration-200",
+                "focus-ring flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-medium transition-all duration-200 hover:-translate-y-0.5",
                 active
-                  ? "border-brand-blue bg-brand-blue/20 text-white"
+                  ? "border-brand-blue bg-brand-blue/20 text-white shadow-[0_0_16px_rgba(59,130,246,0.25)]"
                   : "border-white/10 bg-white/[0.03] text-slate-400 hover:border-white/25 hover:text-white"
               )}
             >
@@ -89,7 +89,7 @@ export function ChipSingleGroup({
               role="radio"
               aria-checked={active}
               className={cn(
-                "focus-ring rounded-full border px-3.5 py-2 text-xs font-medium transition-all duration-200",
+                "focus-ring rounded-full border px-3.5 py-2 text-xs font-medium transition-all duration-200 hover:-translate-y-0.5",
                 active
                   ? "border-transparent bg-brand-gradient text-white shadow-glow"
                   : "border-white/10 bg-white/[0.03] text-slate-400 hover:border-white/25 hover:text-white"

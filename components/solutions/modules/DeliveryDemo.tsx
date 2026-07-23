@@ -45,7 +45,7 @@ export default function DeliveryDemo() {
       <AnimatePresence mode="wait">
         {mode === "delivery" ? (
           <motion.div key="delivery" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid gap-6 lg:grid-cols-[1fr_260px]">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+            <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-5 shadow-card">
               <svg viewBox="0 0 320 140" className="w-full" role="img" aria-label="Mapa estilizado del recorrido de entrega">
                 <defs>
                   <linearGradient id="route-grad" x1="0" y1="0" x2="320" y2="0">
@@ -108,7 +108,7 @@ export default function DeliveryDemo() {
             </div>
           </motion.div>
         ) : (
-          <motion.div key="retiro" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="mx-auto max-w-sm rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center">
+          <motion.div key="retiro" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="mx-auto max-w-sm rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-6 text-center shadow-card">
             <p className="text-xs text-slate-500">Pedido listo</p>
             <p className="my-3 text-3xl font-bold tracking-widest text-white">{pickupCode}</p>
             <p className="text-xs text-slate-500">Hora estimada de retiro: en 10 minutos</p>

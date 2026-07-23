@@ -20,7 +20,7 @@ export default function StockDemo() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
-      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+      <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-5 shadow-card">
         <div className="mb-4 flex items-center justify-between">
           <p className="text-sm font-bold text-white">Ingredientes — {state.name}</p>
           <PackageCheck className="h-4 w-4 text-brand-cyan" aria-hidden="true" />
@@ -60,7 +60,7 @@ export default function StockDemo() {
       </div>
 
       <div className="space-y-4">
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+        <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-5 shadow-card">
           <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Descuento automático por venta</p>
           <p className="mb-2 text-sm font-semibold text-white">{recipeTarget.name}</p>
           <ul className="space-y-1.5">
@@ -75,7 +75,7 @@ export default function StockDemo() {
           </ul>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+        <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-5 shadow-card">
           <p className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
             <History className="h-3.5 w-3.5" aria-hidden="true" /> Historial
           </p>

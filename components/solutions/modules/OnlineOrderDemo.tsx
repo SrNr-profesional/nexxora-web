@@ -157,7 +157,7 @@ export default function OnlineOrderDemo() {
         className="hidden lg:flex lg:h-px lg:w-10 lg:self-center"
       />
 
-      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+      <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-6 shadow-card">
         <p className="mb-4 text-sm font-bold text-white">Recorrido del pedido</p>
 
         <AnimatePresence mode="wait">

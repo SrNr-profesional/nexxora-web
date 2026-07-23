@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowRight, PlayCircle } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
-import HeroBackground from "@/components/sections/HeroBackground";
+import AuroraBackground from "@/components/ui/AuroraBackground";
+import MagneticWrapper from "@/components/ui/MagneticWrapper";
 import ConnectedFlow from "@/components/sections/ConnectedFlow";
 
 export default function Hero() {
@@ -15,7 +16,7 @@ export default function Hero() {
 
   return (
     <section id="inicio" className="relative overflow-hidden pb-24 pt-36 sm:pt-44">
-      <HeroBackground />
+      <AuroraBackground palette="cyan" showNet intensity={1.1} />
 
       <Container>
         <div className="mx-auto max-w-4xl text-center">
@@ -32,7 +33,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl"
+            className="text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl"
           >
             Menos errores. Más control.{" "}
             <span className="text-gradient">Un restaurante más eficiente.</span>
@@ -54,14 +55,18 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
-            <Button size="lg" onClick={scrollToForm}>
-              Solicitar diagnóstico gratuito
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button size="lg" variant="secondary" onClick={scrollToDemo}>
-              <PlayCircle className="h-4 w-4" />
-              Ver cómo funciona
-            </Button>
+            <MagneticWrapper strength={0.3}>
+              <Button size="lg" onClick={scrollToForm}>
+                Solicitar diagnóstico gratuito
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </MagneticWrapper>
+            <MagneticWrapper strength={0.3}>
+              <Button size="lg" variant="secondary" onClick={scrollToDemo}>
+                <PlayCircle className="h-4 w-4" />
+                Ver cómo funciona
+              </Button>
+            </MagneticWrapper>
           </motion.div>
 
           <motion.p

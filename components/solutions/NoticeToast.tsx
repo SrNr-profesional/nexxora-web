@@ -16,7 +16,7 @@ export default function NoticeToast() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-white shadow-lg"
+            className="flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-white shadow-[0_8px_32px_rgba(16,185,129,0.35),0_0_0_1px_rgba(255,255,255,0.1)]"
           >
             <BellRing className="h-3.5 w-3.5" aria-hidden="true" />
             {state.notice}

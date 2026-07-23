@@ -18,6 +18,8 @@ import {
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
+import TiltCard from "@/components/ui/TiltCard";
+import AuroraBackground from "@/components/ui/AuroraBackground";
 
 const PROBLEMS = [
   {
@@ -86,6 +88,7 @@ export default function Problems() {
 
   return (
     <section id="problemas" className="relative py-24 sm:py-32">
+      <AuroraBackground palette="blue" intensity={0.55} showGrid={false} />
       <Container>
         <SectionHeading
           eyebrow="Diagnóstico rápido"
@@ -97,39 +100,40 @@ export default function Problems() {
           {PROBLEMS.map((item, i) => {
             const isActive = activeIndex === i;
             return (
-              <motion.button
-                key={item.title}
-                type="button"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ duration: 0.4, delay: (i % 4) * 0.07 }}
-                onClick={() => setActiveIndex(isActive ? null : i)}
-                aria-pressed={isActive}
-                className={`focus-ring group relative flex min-h-[190px] flex-col rounded-xl2 border p-5 text-left transition-all duration-300 ${
-                  isActive
-                    ? "border-brand-blue/50 bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 shadow-glow"
-                    : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]"
-                }`}
-              >
-                <div
-                  className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl transition-colors duration-300 ${
-                    isActive ? "bg-brand-gradient" : "bg-white/[0.06] group-hover:bg-white/10"
+              <TiltCard key={item.title} maxTilt={6} className="h-full min-h-[190px]">
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-30px" }}
+                  transition={{ duration: 0.4, delay: (i % 4) * 0.07 }}
+                  onClick={() => setActiveIndex(isActive ? null : i)}
+                  aria-pressed={isActive}
+                  className={`focus-ring group relative flex h-full min-h-[190px] w-full flex-col rounded-xl2 border p-5 text-left transition-all duration-300 ${
+                    isActive
+                      ? "border-brand-blue/50 bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 shadow-glow"
+                      : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]"
                   }`}
                 >
-                  <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-brand-cyan"}`} />
-                </div>
-                <p className="text-sm font-semibold leading-snug text-white">{item.title}</p>
-                <p className="mt-2 text-xs leading-relaxed text-slate-400">{item.consequence}</p>
-                <span
-                  className={`mt-auto flex items-center gap-1 pt-4 text-xs font-semibold transition-colors ${
-                    isActive ? "text-brand-cyan" : "text-slate-500 group-hover:text-white"
-                  }`}
-                >
-                  Ver solución
-                  <ArrowRight className={`h-3.5 w-3.5 transition-transform ${isActive ? "rotate-90" : ""}`} />
-                </span>
-              </motion.button>
+                  <div
+                    className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl transition-colors duration-300 ${
+                      isActive ? "bg-brand-gradient" : "bg-white/[0.06] group-hover:bg-white/10"
+                    }`}
+                  >
+                    <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-brand-cyan"}`} />
+                  </div>
+                  <p className="text-sm font-semibold leading-snug text-white">{item.title}</p>
+                  <p className="mt-2 text-xs leading-relaxed text-slate-400">{item.consequence}</p>
+                  <span
+                    className={`mt-auto flex items-center gap-1 pt-4 text-xs font-semibold transition-colors ${
+                      isActive ? "text-brand-cyan" : "text-slate-500 group-hover:text-white"
+                    }`}
+                  >
+                    Ver solución
+                    <ArrowRight className={`h-3.5 w-3.5 transition-transform ${isActive ? "rotate-90" : ""}`} />
+                  </span>
+                </motion.button>
+              </TiltCard>
             );
           })}
         </div>
@@ -141,10 +145,15 @@ export default function Problems() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.35 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="mt-8 overflow-hidden"
             >
-              <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.02] p-6 sm:p-8">
+              <motion.div
+                initial={{ scale: 0.97, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.35, delay: 0.05 }}
+                className="rounded-[1.75rem] border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 shadow-card sm:p-8"
+              >
                 <p className="mb-6 text-center text-sm font-semibold text-white">{active.title}</p>
                 <div className="grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
                   <div className="rounded-xl2 border border-white/10 bg-white/[0.03] p-5">
@@ -177,7 +186,7 @@ export default function Problems() {
                     </ul>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

@@ -4,5 +4,6 @@ out
 .env
 .env.local
 .vercel
+.netlify
 *.log
 .DS_Store

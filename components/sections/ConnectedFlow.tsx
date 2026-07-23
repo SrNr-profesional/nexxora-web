@@ -68,7 +68,7 @@ export default function ConnectedFlow() {
     const rect = e.currentTarget.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: Math.max(-2, Math.min(2, py * -4)), y: Math.max(-2, Math.min(2, px * 4)) });
+    setTilt({ x: Math.max(-5, Math.min(5, py * -8)), y: Math.max(-5, Math.min(5, px * 8)) });
   };
 
   const synced = activeIndex >= NODES.length;

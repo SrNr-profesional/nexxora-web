@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { motion } from "framer-motion";
 import {
   ResponsiveContainer,
   BarChart,
@@ -36,7 +37,7 @@ export default function AdminDashboardDemo() {
   const outOfStock = state.menu.filter((m) => !m.available);
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
+    <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-5 shadow-card sm:p-6">
       <div className="mb-5 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
         <p className="text-sm font-bold text-white">{state.name} — Panel en vivo</p>
         <span className="text-[11px] text-slate-500">Datos ficticios de ejemplo</span>
@@ -50,7 +51,13 @@ export default function AdminDashboardDemo() {
       </div>
 
       <div className="mt-5 grid gap-4 lg:grid-cols-2">
-        <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.4, delay: 0 }}
+          className="rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors duration-300 hover:border-brand-blue/25"
+        >
           <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Ventas por hora</p>
           <ResponsiveContainer width="100%" height={170}>
             <BarChart data={hourlyData}>
@@ -65,9 +72,15 @@ export default function AdminDashboardDemo() {
               <Bar dataKey="ventas" radius={[6, 6, 0, 0]} fill="#3b82f6" />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </motion.div>
 
-        <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.4, delay: 0.08 }}
+          className="rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors duration-300 hover:border-brand-blue/25"
+        >
           <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Comparación semanal</p>
           <ResponsiveContainer width="100%" height={170}>
             <LineChart data={state.weeklyComparison}>
@@ -83,9 +96,15 @@ export default function AdminDashboardDemo() {
               <Line type="monotone" dataKey="actual" stroke="#22d3ee" strokeWidth={2.5} dot={false} />
             </LineChart>
           </ResponsiveContainer>
-        </div>
+        </motion.div>
 
-        <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.4, delay: 0.16 }}
+          className="rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors duration-300 hover:border-brand-blue/25"
+        >
           <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Pedidos por canal</p>
           <div className="flex items-center gap-4">
             <ResponsiveContainer width={110} height={110}>
@@ -107,15 +126,21 @@ export default function AdminDashboardDemo() {
               ))}
             </ul>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.4, delay: 0.24 }}
+          className="rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors duration-300 hover:border-brand-blue/25"
+        >
           <p className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
             <Trophy className="h-3.5 w-3.5 text-brand-cyan" aria-hidden="true" /> Producto más vendido
           </p>
           <p className="text-xl font-bold text-white">{state.topProduct}</p>
           <p className="text-xs text-slate-500">Se mantiene como el más pedido hoy</p>
-        </div>
+        </motion.div>
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">

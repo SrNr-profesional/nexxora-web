@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { CheckCircle2, ArrowRight, Tablet, ChefHat, GraduationCap, Headset } from "lucide-react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -113,6 +114,9 @@ const STEPS = [
 
 export default function HowItWorks() {
   const scrollToForm = () => document.getElementById("diagnostico")?.scrollIntoView({ behavior: "smooth" });
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: timelineRef, offset: ["start 0.75", "end 0.4"] });
+  const lineProgress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <section id="como-funciona" className="relative py-24 sm:py-32">
@@ -123,8 +127,13 @@ export default function HowItWorks() {
           description="No instalamos un sistema genérico. Primero entendemos cómo funciona tu negocio y después adaptamos la solución."
         />
 
-        <div className="relative mt-16">
-          <div className="absolute left-6 top-6 bottom-6 hidden w-px bg-gradient-to-b from-brand-cyan via-brand-blue to-brand-purple sm:block lg:left-1/2" />
+        <div ref={timelineRef} className="relative mt-16">
+          <div className="absolute left-6 top-6 bottom-6 hidden w-px bg-white/10 sm:block lg:left-1/2" />
+          <motion.div
+            aria-hidden="true"
+            className="absolute left-6 top-6 hidden w-px origin-top bg-gradient-to-b from-brand-cyan via-brand-blue to-brand-purple sm:block lg:left-1/2"
+            style={{ bottom: "1.5rem", scaleY: lineProgress }}
+          />
 
           <div className="space-y-10 lg:space-y-16">
             {STEPS.map((step, i) => (

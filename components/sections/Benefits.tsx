@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
+import TiltCard from "@/components/ui/TiltCard";
 
 const BENEFITS = [
   { icon: CheckCircle2, text: "Menos errores en los pedidos." },
@@ -37,19 +38,20 @@ export default function Benefits() {
 
         <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {BENEFITS.map((b, i) => (
-            <motion.div
-              key={b.text}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.4, delay: (i % 3) * 0.07 }}
-              className="flex items-center gap-3.5 rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-brand-blue/30 hover:bg-white/[0.05]"
-            >
-              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-brand-gradient/20">
-                <b.icon className="h-4 w-4 text-brand-cyan" />
-              </div>
-              <p className="text-sm font-medium text-slate-200">{b.text}</p>
-            </motion.div>
+            <TiltCard key={b.text} maxTilt={5} className="h-full">
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.4, delay: (i % 3) * 0.07 }}
+                className="group flex h-full items-center gap-3.5 rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors duration-300 hover:border-brand-blue/30 hover:bg-white/[0.05]"
+              >
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-brand-gradient/20 shadow-[0_0_20px_rgba(59,130,246,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_28px_rgba(34,211,238,0.35)]">
+                  <b.icon className="h-4 w-4 text-brand-cyan" />
+                </div>
+                <p className="text-sm font-medium text-slate-200">{b.text}</p>
+              </motion.div>
+            </TiltCard>
           ))}
         </div>
 

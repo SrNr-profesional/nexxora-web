@@ -52,7 +52,7 @@ export default function DigitalMenuDemo() {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-center">
-      <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-6 text-center">
+      <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-6 text-center shadow-card">
         <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-slate-500">
           <QrCode className="h-3.5 w-3.5" aria-hidden="true" /> Soporte de mesa
         </div>
@@ -100,7 +100,7 @@ export default function DigitalMenuDemo() {
 
       <AnimatedConnection active={updating} orientation="horizontal" label={justUpdated ? "Actualizado" : undefined} className="hidden lg:flex lg:h-px lg:w-10" />
 
-      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+      <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-5 shadow-card">
         <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-slate-500">Panel administrativo</p>
         <p className="text-sm font-semibold text-white">{target.name}</p>
         <p className="mb-4 text-xs text-slate-500">Precio actual: {formatCurrencyARS(target.price)}</p>

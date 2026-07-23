@@ -118,7 +118,7 @@ export default function KitchenDisplayDemo() {
           {COLUMNS.map((col) => {
             const orders = activeOrders.filter((o) => o.status === col.status);
             return (
-              <div key={col.status} className="rounded-2xl border border-white/10 bg-white/[0.02] p-3.5">
+              <div key={col.status} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-3.5 shadow-card">
                 <div className="mb-3 flex items-center justify-between">
                   <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{col.label}</p>
                   <span className="rounded-full bg-white/10 px-2 py-0.5 text-[11px] text-slate-300">{orders.length}</span>

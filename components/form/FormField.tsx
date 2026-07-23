@@ -21,8 +21,8 @@ export const TextField = forwardRef<
         ref={ref}
         id={id}
         className={cn(
-          "focus-ring w-full rounded-xl border bg-white/[0.04] px-4 py-3 text-sm text-white placeholder:text-slate-500 transition-colors",
-          error ? "border-red-500/60" : "border-white/10 hover:border-white/20 focus:border-brand-blue",
+          "focus-ring w-full rounded-xl border bg-white/[0.04] px-4 py-3 text-sm text-white placeholder:text-slate-500 transition-all duration-200",
+          error ? "border-red-500/60" : "border-white/10 hover:border-white/20 focus:border-brand-blue focus:bg-white/[0.06] focus:shadow-[0_0_0_4px_rgba(59,130,246,0.12)]",
           className
         )}
         aria-invalid={!!error}
@@ -53,8 +53,8 @@ export const TextAreaField = forwardRef<
         id={id}
         rows={4}
         className={cn(
-          "focus-ring w-full rounded-xl border bg-white/[0.04] px-4 py-3 text-sm text-white placeholder:text-slate-500 transition-colors",
-          error ? "border-red-500/60" : "border-white/10 hover:border-white/20 focus:border-brand-blue",
+          "focus-ring w-full rounded-xl border bg-white/[0.04] px-4 py-3 text-sm text-white placeholder:text-slate-500 transition-all duration-200",
+          error ? "border-red-500/60" : "border-white/10 hover:border-white/20 focus:border-brand-blue focus:bg-white/[0.06] focus:shadow-[0_0_0_4px_rgba(59,130,246,0.12)]",
           className
         )}
         aria-invalid={!!error}

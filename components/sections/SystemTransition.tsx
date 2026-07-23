@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Container from "@/components/ui/Container";
 
@@ -13,6 +14,9 @@ const CHAIN = ["Pedidos", "Cocina", "Stock", "Ventas", "Clientes"];
  */
 export default function SystemTransition() {
   const prefersReducedMotion = useReducedMotion();
+  const chainRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: chainRef, offset: ["start 0.85", "end 0.6"] });
+  const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <section className="relative py-12 sm:py-16">
@@ -39,12 +43,19 @@ export default function SystemTransition() {
         </div>
 
         <motion.div
+          ref={chainRef}
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.16 }}
-          className="mx-auto mt-9 flex max-w-3xl flex-wrap items-center justify-center gap-x-2 gap-y-3"
+          className="relative mx-auto mt-9 flex max-w-3xl flex-wrap items-center justify-center gap-x-2 gap-y-3"
         >
+          <div className="absolute left-[6%] right-[6%] top-1/2 hidden h-px -translate-y-1/2 bg-white/10 sm:block" aria-hidden="true">
+            <motion.div
+              className="h-full origin-left bg-gradient-to-r from-brand-cyan via-brand-blue to-brand-purple"
+              style={{ scaleX: prefersReducedMotion ? 1 : lineScale }}
+            />
+          </div>
           {CHAIN.map((node, i) => (
             <div key={node} className="flex items-center gap-2">
               <span className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-semibold text-slate-300 sm:text-sm">

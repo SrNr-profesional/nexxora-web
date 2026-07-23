@@ -57,19 +57,24 @@ export default function FAQ() {
       <Container>
         <SectionHeading eyebrow="Dudas frecuentes" title="Preguntas frecuentes" />
 
-        <div className="mx-auto mt-14 max-w-3xl divide-y divide-white/10 rounded-xl2 glass">
+        <div className="mx-auto mt-14 max-w-3xl divide-y divide-white/10 overflow-hidden rounded-xl2 glass shadow-card">
           {FAQS.map((item, i) => {
             const isOpen = open === i;
             return (
-              <div key={item.q} className="px-6">
+              <div
+                key={item.q}
+                className={`px-6 transition-colors duration-300 ${isOpen ? "bg-white/[0.03]" : ""}`}
+              >
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
                   aria-expanded={isOpen}
                   className="focus-ring flex w-full items-center justify-between gap-4 py-5 text-left"
                 >
-                  <span className="text-sm font-semibold text-white sm:text-base">{item.q}</span>
+                  <span className={`text-sm font-semibold transition-colors duration-300 sm:text-base ${isOpen ? "text-brand-cyan" : "text-white"}`}>
+                    {item.q}
+                  </span>
                   <ChevronDown
-                    className={`h-5 w-5 flex-shrink-0 text-brand-cyan transition-transform duration-300 ${
+                    className={`h-5 w-5 flex-shrink-0 text-brand-cyan transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                       isOpen ? "rotate-180" : ""
                     }`}
                   />
@@ -80,7 +85,7 @@ export default function FAQ() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
                       <p className="pb-5 text-sm leading-relaxed text-slate-400">{item.a}</p>

@@ -6,6 +6,9 @@ import { ArrowRight, MessageCircle, Layers, Zap, SlidersHorizontal } from "lucid
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
+import TiltCard from "@/components/ui/TiltCard";
+import AuroraBackground from "@/components/ui/AuroraBackground";
+import MagneticWrapper from "@/components/ui/MagneticWrapper";
 import { DemoProvider, useDemo } from "@/components/solutions/DemoContext";
 import BusinessTypeSelector from "@/components/solutions/BusinessTypeSelector";
 import SolutionNavigation, { SolutionModuleId, SOLUTION_MODULES } from "@/components/solutions/SolutionNavigation";
@@ -54,30 +57,34 @@ function SolutionsPanel() {
       <div className="mt-8 grid gap-6 lg:grid-cols-[260px_1fr]">
         <SolutionNavigation active={activeModule} onChange={setActiveModule} />
 
-        <div className="relative min-h-[560px] rounded-[1.75rem] border border-white/10 bg-gradient-to-b from-white/[0.035] to-transparent p-5 shadow-card sm:p-7 lg:min-h-[600px]">
-          <div aria-hidden="true" className="pointer-events-none absolute -top-16 right-10 h-40 w-40 rounded-full bg-brand-blue/10 blur-3xl" />
-          <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-10 h-40 w-40 rounded-full bg-brand-purple/10 blur-3xl" />
+        <TiltCard maxTilt={3} className="min-h-[560px] lg:min-h-[600px]">
+          <div className="relative h-full min-h-[560px] overflow-hidden rounded-[1.75rem] border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-5 shadow-[0_24px_70px_-20px_rgba(0,0,0,0.55)] sm:p-7 lg:min-h-[600px]">
+            <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+            <div aria-hidden="true" className="pointer-events-none absolute -top-16 right-10 h-48 w-48 rounded-full bg-brand-blue/15 blur-3xl transition-all duration-700" />
+            <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-10 h-48 w-48 rounded-full bg-brand-purple/15 blur-3xl transition-all duration-700" />
 
-          <NoticeToast />
+            <NoticeToast />
 
-          <h3 className="sr-only">{activeLabel}</h3>
+            <h3 className="sr-only">{activeLabel}</h3>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeModule}
-              id={`solution-panel-${activeModule}`}
-              role="tabpanel"
-              aria-labelledby={`solution-tab-${activeModule}`}
-              initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
-              transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-              className="relative"
-            >
-              <ActiveComponent />
-            </motion.div>
-          </AnimatePresence>
-        </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeModule}
+                id={`solution-panel-${activeModule}`}
+                role="tabpanel"
+                aria-labelledby={`solution-tab-${activeModule}`}
+                initial={{ opacity: 0, y: 16, rotateX: 6, scale: 0.98, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -10, rotateX: -4, scale: 0.99, filter: "blur(4px)" }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                style={{ transformStyle: "preserve-3d" }}
+                className="relative"
+              >
+                <ActiveComponent />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </TiltCard>
       </div>
     </>
   );
@@ -88,6 +95,7 @@ export default function RestaurantSolutionsSection() {
 
   return (
     <section id="soluciones" className="relative py-24 sm:py-32">
+      <AuroraBackground palette="purple" intensity={0.7} />
       <Container>
         <SectionHeading
           eyebrow="Plataforma todo-en-uno"
@@ -113,21 +121,26 @@ export default function RestaurantSolutionsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mt-14 rounded-[1.75rem] border border-white/10 bg-gradient-to-br from-brand-blue/10 via-base-900 to-brand-purple/10 p-8 text-center sm:p-10"
+          className="relative mt-14 overflow-hidden rounded-[1.75rem] border border-white/10 bg-gradient-to-br from-brand-blue/10 via-base-900 to-brand-purple/10 p-8 text-center shadow-card sm:p-10"
         >
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
           <h3 className="text-xl font-bold text-white sm:text-2xl">Cada restaurante funciona de una manera distinta.</h3>
           <p className="mx-auto mt-2 max-w-xl text-sm text-slate-400 sm:text-base">
             Seleccionamos y adaptamos únicamente las herramientas que realmente necesita tu operación.
           </p>
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button onClick={scrollToForm}>
-              Quiero mi diagnóstico gratuito
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button variant="secondary" onClick={() => window.open(WHATSAPP_DEFAULT_LINK, "_blank")}>
-              <MessageCircle className="h-4 w-4" />
-              Hablar por WhatsApp
-            </Button>
+            <MagneticWrapper strength={0.25}>
+              <Button onClick={scrollToForm}>
+                Quiero mi diagnóstico gratuito
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </MagneticWrapper>
+            <MagneticWrapper strength={0.25}>
+              <Button variant="secondary" onClick={() => window.open(WHATSAPP_DEFAULT_LINK, "_blank")}>
+                <MessageCircle className="h-4 w-4" />
+                Hablar por WhatsApp
+              </Button>
+            </MagneticWrapper>
           </div>
         </motion.div>
       </Container>

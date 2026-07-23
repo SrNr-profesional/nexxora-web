@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { X, Check, ArrowRight } from "lucide-react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
+import TiltCard from "@/components/ui/TiltCard";
 
 const BEFORE = [
   "Pedidos por varios canales",
@@ -33,32 +34,34 @@ export default function Comparison() {
         />
 
         <div className="relative mt-14 grid gap-6 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20, rotate: -1 }}
-            whileInView={{ opacity: 1, x: 0, rotate: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6 }}
-            className="rounded-xl2 border border-white/10 bg-white/[0.02] p-6 sm:p-8"
-          >
-            <p className="mb-5 text-xs font-bold uppercase tracking-widest text-slate-500">
-              Operación tradicional
-            </p>
-            <ul className="space-y-3">
-              {BEFORE.map((line, i) => (
-                <motion.li
-                  key={line}
-                  initial={{ opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.06 }}
-                  className="flex items-start gap-2.5 text-sm text-slate-400"
-                >
-                  <X className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400/70" />
-                  {line}
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+          <TiltCard maxTilt={5}>
+            <motion.div
+              initial={{ opacity: 0, x: -20, rotate: -1 }}
+              whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6 }}
+              className="h-full rounded-xl2 border border-white/10 bg-white/[0.02] p-6 shadow-card sm:p-8"
+            >
+              <p className="mb-5 text-xs font-bold uppercase tracking-widest text-slate-500">
+                Operación tradicional
+              </p>
+              <ul className="space-y-3">
+                {BEFORE.map((line, i) => (
+                  <motion.li
+                    key={line}
+                    initial={{ opacity: 0, x: -12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: i * 0.06 }}
+                    className="flex items-start gap-2.5 text-sm text-slate-400"
+                  >
+                    <X className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400/70" />
+                    {line}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </TiltCard>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -70,30 +73,32 @@ export default function Comparison() {
             <ArrowRight className="h-5 w-5 text-white" />
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="rounded-xl2 border border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6 sm:p-8"
-          >
-            <p className="mb-5 text-xs font-bold uppercase tracking-widest text-brand-cyan">Con Nexxora</p>
-            <ul className="space-y-3">
-              {AFTER.map((line, i) => (
-                <motion.li
-                  key={line}
-                  initial={{ opacity: 0, x: 12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.4 + i * 0.06 }}
-                  className="flex items-start gap-2.5 text-sm text-slate-200"
-                >
-                  <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-400" />
-                  {line}
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+          <TiltCard maxTilt={5}>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="h-full rounded-xl2 border border-brand-blue/30 bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6 shadow-glow sm:p-8"
+            >
+              <p className="mb-5 text-xs font-bold uppercase tracking-widest text-brand-cyan">Con Nexxora</p>
+              <ul className="space-y-3">
+                {AFTER.map((line, i) => (
+                  <motion.li
+                    key={line}
+                    initial={{ opacity: 0, x: 12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.4 + i * 0.06 }}
+                    className="flex items-start gap-2.5 text-sm text-slate-200"
+                  >
+                    <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-400" />
+                    {line}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </TiltCard>
         </div>
 
         <motion.p

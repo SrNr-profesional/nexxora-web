@@ -18,7 +18,7 @@ export default function LoyaltyDemo() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
-      <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
+      <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6 shadow-card">
         <div className="mb-5 flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-gradient text-sm font-bold text-white">
             {state.customer.name.split(" ").map((n) => n[0]).join("")}
@@ -70,7 +70,7 @@ export default function LoyaltyDemo() {
         )}
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+      <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-6 shadow-card">
         <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-slate-500">Cómo Nexxora segmenta a tus clientes</p>
         <ul className="space-y-3">
           {SEGMENTS.map((s) => (

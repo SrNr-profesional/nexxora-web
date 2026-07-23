@@ -49,7 +49,7 @@ export default function AIAutomationDemo() {
   }, [analyzing, visibleCount, insights.length]);
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-brand-blue/10 via-transparent to-brand-purple/10 p-6">
+    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-brand-blue/10 via-transparent to-brand-purple/10 p-6 shadow-card">
       <div className="mb-5 flex items-center gap-2">
         <Sparkles className="h-5 w-5 text-brand-cyan" aria-hidden="true" />
         <p className="text-sm font-bold text-white">Nexxora Intelligence</p>

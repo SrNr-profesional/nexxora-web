@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { QrCode, ShoppingCart, Monitor, Package, ChartNoAxesCombined, Users, Bike, Sparkles, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -48,17 +49,25 @@ export default function SolutionNavigation({
             aria-controls={`solution-panel-${m.id}`}
             onClick={() => onChange(m.id)}
             className={cn(
-              "focus-ring group relative flex flex-shrink-0 items-center gap-3 whitespace-nowrap rounded-xl px-4 py-3.5 text-left text-sm font-medium transition-all duration-300 lg:whitespace-normal",
-              isActive ? "text-white shadow-glow" : "text-slate-400 hover:bg-white/5 hover:text-white"
+              "focus-ring group relative flex flex-shrink-0 items-center gap-3 whitespace-nowrap rounded-xl px-4 py-3.5 text-left text-sm font-medium transition-colors duration-300 lg:whitespace-normal",
+              isActive ? "text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
             )}
           >
             {isActive && (
-              <span
+              <motion.span
+                layoutId="solution-tab-pill"
                 aria-hidden="true"
-                className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-r from-brand-cyan/90 via-brand-blue to-brand-purple"
+                transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-r from-brand-cyan/90 via-brand-blue to-brand-purple shadow-glow"
               />
             )}
-            <m.icon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+            <m.icon
+              className={cn(
+                "h-5 w-5 flex-shrink-0 transition-transform duration-300",
+                isActive && "scale-110"
+              )}
+              aria-hidden="true"
+            />
             {m.label}
           </button>
         );

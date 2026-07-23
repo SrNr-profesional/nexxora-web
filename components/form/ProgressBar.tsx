@@ -19,8 +19,8 @@ export default function ProgressBar({ step, total }: { step: number; total: numb
               <div
                 className={cn(
                   "flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors duration-300 sm:h-8 sm:w-8",
-                  done && "bg-brand-gradient text-white",
-                  active && "bg-white/10 text-white ring-2 ring-brand-blue",
+                  done && "bg-brand-gradient text-white shadow-glow",
+                  active && "bg-white/10 text-white ring-2 ring-brand-blue shadow-glow",
                   !done && !active && "bg-white/5 text-slate-500"
                 )}
               >
@@ -40,7 +40,7 @@ export default function ProgressBar({ step, total }: { step: number; total: numb
       </div>
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/5">
         <motion.div
-          className="h-full rounded-full bg-brand-gradient"
+          className="h-full rounded-full bg-brand-gradient shadow-[0_0_12px_rgba(34,211,238,0.6)]"
           initial={{ width: 0 }}
           animate={{ width: `${(step / total) * 100}%` }}
           transition={{ duration: 0.4, ease: "easeOut" }}
