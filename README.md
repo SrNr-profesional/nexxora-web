@@ -33,8 +33,8 @@ La web queda disponible en `http://localhost:3000`. El panel interno está en `h
 | `SUPABASE_SERVICE_ROLE_KEY` | Clave con permisos totales. Se usa **solo en el servidor** (API routes) para guardar y leer contactos. Nunca se expone al navegador. |
 | `RESEND_API_KEY` | API key de Resend para el envío de emails. |
 | `ADMIN_EMAIL` | Email que recibe la notificación de cada nuevo diagnóstico. |
-| `ADMIN_PASSWORD` | Contraseña de acceso al panel interno (`/admin`). |
-| `ADMIN_SESSION_SECRET` | (Opcional) Secreto para firmar la sesión del panel. Si no se define, se usa `ADMIN_PASSWORD`. |
+| `NEXT_PUBLIC_SUPABASE_URL` | Misma URL de Supabase que `SUPABASE_URL`, expuesta al cliente. La usa el login del panel interno (Supabase Auth). |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clave anónima expuesta al cliente. Segura de exponer: no hay policies de RLS, así que sola no puede leer/escribir nada. |
 | `NEXT_PUBLIC_SITE_URL` | URL pública del sitio (usada en metadatos, sitemap y Open Graph). |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Email de contacto mostrado en el footer. |
 
@@ -57,19 +57,52 @@ exclusivamente en el servidor (`lib/supabase/server.ts`, `lib/resend.ts`, rutas 
 3. Reemplazá `FROM_ADDRESS` en `lib/resend.ts` por tu dirección verificada (por defecto usa el dominio
    de prueba `resend.dev`, que solo envía a la cuenta con la que te registraste).
 
-## 5. Panel interno (`/admin`)
+## 5. Panel interno (`/admin`) — CRM y gestión comercial
 
-Acceso protegido por contraseña (`ADMIN_PASSWORD`). Permite:
+`/admin` es el centro de comando interno de Nexxora: CRM de prospectos, pipeline, tareas, propuestas,
+clientes, MRR e inteligencia comercial para Nara y Juli. Login con Supabase Auth (email + contraseña,
+una cuenta real por persona) — no hay contraseña compartida.
 
-- Ver todos los diagnósticos recibidos, con búsqueda por restaurante/nombre/teléfono y filtro por estado.
-- Ver el diagnóstico completo de cada contacto.
-- Cambiar el estado comercial (nuevo, contactado, reunión agendada, propuesta enviada, negociación,
-  cliente cerrado, no interesado), agregar notas internas y definir una fecha de próximo seguimiento.
-- Exportar todos los contactos a CSV.
-- Abrir WhatsApp o email directamente desde cada contacto.
+El visor original de diagnósticos del formulario público sigue existiendo, reubicado en
+`/admin/formulario-web`.
 
-Es un sistema de autenticación simple (contraseña única), pensado para uso interno de un equipo pequeño.
-Si en el futuro necesitás múltiples usuarios con roles distintos, migrar a Supabase Auth.
+### Puesta en marcha (una sola vez)
+
+1. **Correr la migración del CRM**: en el **SQL Editor** de Supabase, ejecutá el contenido completo de
+   `supabase/migration_crm.sql`. Crea todas las tablas del CRM (`companies`, `people`, `activities`,
+   `tasks`, `proposals`, `goals`, etc.), un trigger que crea el perfil automáticamente al dar de alta un
+   usuario, y el catálogo de motivos de pérdida. No toca ni modifica la tabla `contacts` existente.
+2. **Crear los usuarios**: en el Dashboard de Supabase, andá a **Authentication → Users → Add user** y
+   creá dos cuentas (email + contraseña, con "Auto Confirm User" tildado):
+   - `naraagrauu@gmail.com`
+   - `juliganholigans@gmail.com`
+
+   El trigger crea el perfil solo, pero el nombre queda como el prefijo del email. Corré esto en el SQL
+   Editor para dejarlos prolijos:
+   ```sql
+   update public.profiles set full_name = 'Nara' where email = 'naraagrauu@gmail.com';
+   update public.profiles set full_name = 'Juli' where email = 'juliganholigans@gmail.com';
+   ```
+3. **Variables de entorno**: sumá a tu `.env.local` (y a las variables de entorno de Netlify)
+   `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` — mismos valores que `SUPABASE_URL` y
+   `SUPABASE_ANON_KEY`, ver `.env.example`. Ya no hace falta `ADMIN_PASSWORD` ni `ADMIN_SESSION_SECRET`.
+4. **(Opcional) Datos de ejemplo**: para ver el sistema funcionando con información real de prueba, corré
+   `supabase/seed_demo.sql` en el SQL Editor (después de crear los usuarios). Crea ~9 empresas ficticias
+   marcadas con `is_demo = true`. Para borrarlas en cualquier momento: `delete from public.companies where
+   is_demo = true;` (las tablas relacionadas se borran solas).
+
+### Qué incluye
+
+Dashboard con meta del mes y embudo de ventas, vista "Hoy" (vencido/hoy/próximos), CRM de prospectos con
+ficha completa por empresa (contactos, timeline, próxima acción, problemas detectados, preparación de
+visita con resumen automático), pipeline tipo Kanban con drag & drop, tareas asignables entre socios,
+seguimientos, agenda + planificador de ruta de visitas, propuestas, clientes con checklist de
+implementación, panel de MRR/ventas con forecast, metas configurables, inteligencia comercial (score y
+temperatura por oportunidad, alertas, análisis de objeciones, ranking de funcionalidades pedidas,
+resumen semanal, salud del pipeline) y estadísticas por industria y por socio.
+
+Todo el scoring/inteligencia (`lib/crm/scoring.ts`) es determinista: se calcula a partir de datos reales
+del CRM (estado, prioridad, actividad, contactos), sin ninguna llamada a un modelo de lenguaje.
 
 ## 6. Desplegar en Vercel
 

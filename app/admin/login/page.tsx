@@ -2,13 +2,15 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, Loader2 } from "lucide-react";
+import { Mail, Lock, Loader2 } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/Button";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,7 +22,7 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       });
       const result = await res.json();
       if (!res.ok || !result.ok) {
@@ -44,8 +46,25 @@ export default function AdminLoginPage() {
         <div className="mb-6 flex justify-center">
           <Logo />
         </div>
-        <h1 className="mb-1 text-center text-lg font-bold text-white">Acceso interno</h1>
-        <p className="mb-6 text-center text-sm text-slate-500">Panel de contactos y diagnósticos</p>
+        <h1 className="mb-1 text-center text-lg font-bold text-white">Centro de comando Nexxora</h1>
+        <p className="mb-6 text-center text-sm text-slate-500">Acceso interno — solo equipo Nexxora</p>
+
+        <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-300">
+          Email
+        </label>
+        <div className="relative mb-4">
+          <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+          <input
+            id="email"
+            type="email"
+            required
+            autoComplete="username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="focus-ring w-full rounded-xl border border-white/10 bg-white/[0.04] py-3 pl-10 pr-4 text-sm text-white placeholder:text-slate-500 focus:border-brand-blue"
+            placeholder="vos@nexxora.com.ar"
+          />
+        </div>
 
         <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-slate-300">
           Contraseña
@@ -56,12 +75,23 @@ export default function AdminLoginPage() {
             id="password"
             type="password"
             required
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="focus-ring w-full rounded-xl border border-white/10 bg-white/[0.04] py-3 pl-10 pr-4 text-sm text-white placeholder:text-slate-500 focus:border-brand-blue"
             placeholder="••••••••"
           />
         </div>
+
+        <label className="mb-5 flex items-center gap-2 text-xs text-slate-400">
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+            className="focus-ring h-4 w-4 rounded border-white/20 bg-white/5 text-brand-blue"
+          />
+          Recordarme en este dispositivo
+        </label>
 
         {error && (
           <p role="alert" className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
@@ -70,7 +100,7 @@ export default function AdminLoginPage() {
         )}
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Ingresar"}
+          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Iniciar sesión"}
         </Button>
       </form>
     </div>
