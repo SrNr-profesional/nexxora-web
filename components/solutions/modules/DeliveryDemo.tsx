@@ -44,7 +44,7 @@ export default function DeliveryDemo() {
 
       <AnimatePresence mode="wait">
         {mode === "delivery" ? (
-          <motion.div key="delivery" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid gap-6 lg:grid-cols-[1fr_260px]">
+          <motion.div key="delivery" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_260px]">
             <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-5 shadow-card">
               <svg viewBox="0 0 320 140" className="w-full" role="img" aria-label="Mapa estilizado del recorrido de entrega">
                 <defs>

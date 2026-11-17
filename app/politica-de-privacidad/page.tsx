@@ -24,7 +24,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-lg font-semibold text-white">1. Información que recolectamos</h2>
             <p>
               Cuando completás el formulario de diagnóstico, recolectamos datos como nombre, cargo, nombre del
-              restaurante, ciudad, teléfono, email, Instagram y respuestas relacionadas con la operación de tu
+              negocio, ciudad, teléfono, email, Instagram y respuestas relacionadas con la operación de tu
               negocio. También registramos la fecha de envío y, si corresponde, parámetros de origen (UTM) que
               nos permiten entender cómo llegaste a nuestro sitio.
             </p>
@@ -32,7 +32,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-lg font-semibold text-white">2. Uso de la información</h2>
             <p>
               Utilizamos esta información exclusivamente para analizar tu diagnóstico, contactarte y ofrecerte
-              una propuesta adecuada a tu restaurante. No vendemos ni compartimos tus datos con terceros con
+              una propuesta adecuada a tu negocio. No vendemos ni compartimos tus datos con terceros con
               fines comerciales ajenos a {SITE.name}.
             </p>
 

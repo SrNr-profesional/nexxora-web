@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type MouseEvent, type ReactNode } from "react";
+import { useState, type PointerEvent, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useMotionTemplate, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -24,8 +24,9 @@ export default function TiltCard({
   const glareY = useMotionValue(50);
   const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.10), transparent 55%)`;
 
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (prefersReducedMotion) return;
+  const handleMove = (e: PointerEvent<HTMLDivElement>) => {
+    // Solo mouse: con el dedo la tarjeta quedaba inclinada después de tocarla.
+    if (prefersReducedMotion || e.pointerType !== "mouse") return;
     const rect = e.currentTarget.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;
     const py = (e.clientY - rect.top) / rect.height;
@@ -47,14 +48,14 @@ export default function TiltCard({
 
   return (
     <div
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={handleMouseLeave}
+      onPointerMove={handleMove}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setHovered(true)}
+      onPointerLeave={handleMouseLeave}
       className={cn("[perspective:1200px]", className)}
     >
       <motion.div
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="relative h-full w-full"
+        className="relative h-full w-full will-change-transform"
       >
         {children}
         {glare && (

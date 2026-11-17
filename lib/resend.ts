@@ -34,13 +34,13 @@ export async function sendAdminNotification(data: DiagnosticSchema) {
   const rows: [string, string][] = [
     ["Nombre del contacto", data.fullName],
     ["Cargo", data.role],
-    ["Restaurante", data.restaurantName],
+    ["Negocio", data.restaurantName],
     ["Teléfono", data.phone],
     ["Email", data.email],
     ["Ciudad", data.city],
     ["Instagram", data.instagram || "-"],
     ["Cantidad de sucursales", data.branchesCount],
-    ["Pedidos diarios", data.dailyOrders],
+    ["Volumen de operación", data.dailyOrders],
     ["Empleados", data.employeesCount],
     ["Tipo de negocio", data.businessType],
     ["Canales de pedidos", data.orderChannels.join(", ")],
@@ -94,7 +94,7 @@ export async function sendClientConfirmation(data: DiagnosticSchema) {
 
   const html = `
   <div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; color: #0f172a;">
-    <h2 style="color:#1d4ed8;">Recibimos el diagnóstico de tu restaurante</h2>
+    <h2 style="color:#1d4ed8;">Recibimos el diagnóstico de tu negocio</h2>
     <p>Hola, ${escapeHtml(data.fullName)}.</p>
     <p>Gracias por contarnos cómo funciona <strong>${escapeHtml(data.restaurantName)}</strong>.</p>
     <p>Recibimos correctamente la información. Vamos a analizar los problemas y las funciones que
@@ -111,7 +111,7 @@ export async function sendClientConfirmation(data: DiagnosticSchema) {
   await resend.emails.send({
     from: FROM_ADDRESS,
     to: data.email,
-    subject: "Recibimos el diagnóstico de tu restaurante",
+    subject: "Recibimos el diagnóstico de tu negocio",
     html,
   });
 }

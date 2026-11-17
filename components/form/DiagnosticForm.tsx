@@ -14,23 +14,23 @@ import SelectField from "./SelectField";
 import { ChipMultiGroup, ChipSingleGroup } from "./ChipGroup";
 import ProgressBar from "./ProgressBar";
 import DiagnosticSummary from "./DiagnosticSummary";
+import { useIndustry } from "@/components/industry/IndustryContext";
+import { INDUSTRIES, type IndustryId } from "@/lib/industries";
 import {
   diagnosticSchema,
   DiagnosticSchema,
   STEP_FIELDS,
-  BUSINESS_TYPES,
-  ORDER_CHANNELS,
-  CURRENT_SYSTEMS,
   PROBLEM_OPTIONS,
   FEATURE_OPTIONS,
   URGENCY_OPTIONS,
   CONTACT_PREFERENCE_OPTIONS,
   BRANCHES_OPTIONS,
-  DAILY_ORDERS_OPTIONS,
   EMPLOYEES_OPTIONS,
 } from "@/lib/validations";
 
 const TOTAL_STEPS = 5;
+const UNSURE_OPTION = "No estoy seguro, necesito asesoramiento";
+const INDUSTRY_LABELS = INDUSTRIES.map((i) => i.label);
 
 export default function DiagnosticForm() {
   const router = useRouter();
@@ -39,6 +39,20 @@ export default function DiagnosticForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const submittedRef = useRef(false);
+  const { industry, setIndustry } = useIndustry();
+  const isGastro = industry.id === "gastronomia";
+
+  // Opciones del formulario según el rubro elegido.
+  const problemOptions = isGastro
+    ? PROBLEM_OPTIONS
+    : [...industry.problems.map((p) => p.title), "Falta de organización", "Control de varias sedes", "Otro"];
+  const featureOptions = isGastro
+    ? [
+        ...FEATURE_OPTIONS.filter((f) => f !== UNSURE_OPTION),
+        ...industry.services.filter((s) => s.tier === "vision").map((s) => s.title),
+        UNSURE_OPTION,
+      ]
+    : [...industry.services.map((s) => s.title), UNSURE_OPTION];
 
   const {
     register,
@@ -76,6 +90,19 @@ export default function DiagnosticForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Al cambiar de rubro cambian las opciones: se limpian las respuestas que dependen de él.
+  const previousIndustry = useRef<IndustryId>(industry.id);
+  useEffect(() => {
+    if (previousIndustry.current === industry.id) return;
+    previousIndustry.current = industry.id;
+    setValue("businessType", "");
+    setValue("dailyOrders", "");
+    setValue("currentSystem", "");
+    setValue("orderChannels", []);
+    setValue("problems", []);
+    setValue("desiredFeatures", []);
+  }, [industry.id, setValue]);
+
   const goNext = async () => {
     const fields = STEP_FIELDS[step];
     const valid = await trigger(fields as any, { shouldFocus: true });
@@ -84,8 +111,12 @@ export default function DiagnosticForm() {
 
   const goBack = () => setStep((s) => Math.max(1, s - 1));
 
-  const onSubmit = async (data: DiagnosticSchema) => {
+  const onSubmit = async (formData: DiagnosticSchema) => {
     if (submittedRef.current) return;
+    // El rubro viaja dentro de "Tipo de negocio" para no requerir cambios en la base de datos.
+    const data: DiagnosticSchema = isGastro
+      ? formData
+      : { ...formData, businessType: `${industry.label} · ${formData.businessType}` };
     submittedRef.current = true;
     setSubmitting(true);
     setSubmitError(null);
@@ -131,7 +162,7 @@ export default function DiagnosticForm() {
       <Container>
         <SectionHeading
           eyebrow="Diagnóstico gratuito"
-          title="Contanos cómo funciona tu restaurante"
+          title={`Contanos cómo funciona ${industry.noun}`}
           description="Completá este diagnóstico. Analizaremos tus necesidades y te mostraremos qué partes de tu operación podrían automatizarse."
         />
 
@@ -167,6 +198,16 @@ export default function DiagnosticForm() {
               {step === 1 && (
                 <>
                   <h3 className="text-lg font-bold text-white">Información del negocio</h3>
+                  <ChipSingleGroup
+                    label="Rubro"
+                    required
+                    options={INDUSTRY_LABELS}
+                    value={industry.label}
+                    onChange={(label) => {
+                      const next = INDUSTRIES.find((i) => i.label === label);
+                      if (next) setIndustry(next.id);
+                    }}
+                  />
                   <TextField
                     id="fullName"
                     label="Nombre y apellido"
@@ -177,7 +218,7 @@ export default function DiagnosticForm() {
                   />
                   <TextField
                     id="role"
-                    label="Cargo o relación con el restaurante"
+                    label="Cargo o relación con el negocio"
                     required
                     placeholder="Ej: Dueña, encargado, gerente"
                     error={errors.role?.message}
@@ -185,9 +226,9 @@ export default function DiagnosticForm() {
                   />
                   <TextField
                     id="restaurantName"
-                    label="Nombre del restaurante"
+                    label={industry.form.nameLabel}
                     required
-                    placeholder="Ej: Distrito Burger"
+                    placeholder={industry.form.namePlaceholder}
                     error={errors.restaurantName?.message}
                     {...register("restaurantName")}
                   />
@@ -216,20 +257,20 @@ export default function DiagnosticForm() {
                       label="Email"
                       required
                       type="email"
-                      placeholder="Ej: nombre@restaurante.com"
+                      placeholder="Ej: nombre@empresa.com"
                       error={errors.email?.message}
                       {...register("email")}
                     />
                     <TextField
                       id="instagram"
-                      label="Instagram del restaurante"
-                      placeholder="Ej: @distritoburger"
+                      label="Instagram o sitio web"
+                      placeholder="Ej: @minegocio"
                       error={errors.instagram?.message}
                       {...register("instagram")}
                     />
                   </div>
                   <ChipSingleGroup
-                    label="Cantidad de sucursales"
+                    label="Cantidad de sucursales o sedes"
                     required
                     options={BRANCHES_OPTIONS}
                     value={values.branchesCount}
@@ -243,9 +284,9 @@ export default function DiagnosticForm() {
                 <>
                   <h3 className="text-lg font-bold text-white">Operación actual</h3>
                   <ChipSingleGroup
-                    label="Cantidad aproximada de pedidos por día"
+                    label={industry.form.volumeLabel}
                     required
-                    options={DAILY_ORDERS_OPTIONS}
+                    options={industry.form.volumeOptions}
                     value={values.dailyOrders}
                     onChange={(v) => setValue("dailyOrders", v, { shouldValidate: true })}
                     error={errors.dailyOrders?.message}
@@ -262,14 +303,15 @@ export default function DiagnosticForm() {
                     id="businessType"
                     label="Tipo de negocio"
                     required
-                    options={BUSINESS_TYPES}
+                    key={industry.id}
+                    options={industry.form.subtypes}
                     error={errors.businessType?.message}
                     {...register("businessType")}
                   />
                   <ChipMultiGroup
-                    label="¿Cómo reciben los pedidos actualmente?"
+                    label={industry.form.channelsLabel}
                     required
-                    options={ORDER_CHANNELS}
+                    options={industry.form.channels}
                     value={values.orderChannels || []}
                     onChange={(v) => setValue("orderChannels", v, { shouldValidate: true })}
                     error={errors.orderChannels?.message}
@@ -277,7 +319,7 @@ export default function DiagnosticForm() {
                   <ChipSingleGroup
                     label="¿Qué sistema utilizan actualmente?"
                     required
-                    options={CURRENT_SYSTEMS}
+                    options={industry.form.currentSystems}
                     value={values.currentSystem}
                     onChange={(v) => setValue("currentSystem", v, { shouldValidate: true })}
                     error={errors.currentSystem?.message}
@@ -291,7 +333,7 @@ export default function DiagnosticForm() {
                   <ChipMultiGroup
                     label="¿Qué problemas querés solucionar?"
                     required
-                    options={PROBLEM_OPTIONS}
+                    options={problemOptions}
                     value={values.problems || []}
                     onChange={(v) => setValue("problems", v, { shouldValidate: true })}
                     error={errors.problems?.message}
@@ -300,7 +342,7 @@ export default function DiagnosticForm() {
                     id="mainProblem"
                     label="Contanos cuál es el principal problema que te gustaría resolver"
                     required
-                    placeholder="Ej: Perdemos pedidos entre el salón y la cocina..."
+                    placeholder={industry.form.mainProblemPlaceholder}
                     error={errors.mainProblem?.message}
                     {...register("mainProblem")}
                   />
@@ -313,7 +355,7 @@ export default function DiagnosticForm() {
                   <ChipMultiGroup
                     label="¿Qué funciones te interesaría incorporar?"
                     required
-                    options={FEATURE_OPTIONS}
+                    options={featureOptions}
                     value={values.desiredFeatures || []}
                     onChange={(v) => setValue("desiredFeatures", v, { shouldValidate: true })}
                     error={errors.desiredFeatures?.message}

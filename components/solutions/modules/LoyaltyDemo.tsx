@@ -17,7 +17,7 @@ export default function LoyaltyDemo() {
   const unlocked = state.customer.points >= 300;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
+    <div className="grid gap-6 lg:grid-cols-2">
       <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6 shadow-card">
         <div className="mb-5 flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-gradient text-sm font-bold text-white">

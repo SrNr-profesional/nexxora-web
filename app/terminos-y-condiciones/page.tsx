@@ -23,7 +23,7 @@ export default function TermsPage() {
             <h2 className="text-lg font-semibold text-white">1. Objeto del sitio</h2>
             <p>
               Este sitio tiene como finalidad presentar los servicios de automatización y digitalización de
-              {" "}{SITE.name} para restaurantes, y permitir a los usuarios solicitar un diagnóstico gratuito de
+              {" "}{SITE.name} para empresas, y permitir a los usuarios solicitar un diagnóstico gratuito de
               su negocio.
             </p>
 
@@ -42,7 +42,7 @@ export default function TermsPage() {
             <h2 className="text-lg font-semibold text-white">4. Limitación de responsabilidad</h2>
             <p>
               Los beneficios y resultados mencionados en el sitio son orientativos. Los resultados reales
-              pueden variar según la operación y el nivel de implementación de cada restaurante.
+              pueden variar según la operación y el nivel de implementación de cada cliente.
             </p>
 
             <h2 className="text-lg font-semibold text-white">5. Contacto</h2>

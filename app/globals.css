@@ -2,23 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --font-inter: "Inter", system-ui, sans-serif;
-}
-
-* {
-  scroll-behavior: smooth;
-}
+/*
+ * --font-inter la define next/font en <html> (ver app/layout.tsx).
+ * No redefinirla acá: un ":root { --font-inter: ... }" pisa la fuente
+ * optimizada y el sitio termina usando la tipografía del sistema.
+ */
 
 html {
-  scroll-padding-top: 88px;
+  scroll-behavior: smooth;
+  /* header (56px) + barra de rubros (≈52px) + aire */
+  scroll-padding-top: 124px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   @apply bg-base-950 text-slate-100 antialiased;
+  overflow-x: clip;
+}
+
+/*
+ * Resplandor de fondo en una capa fija propia. Reemplaza a
+ * "background-attachment: fixed", que obliga a repintar toda la página en
+ * cada frame de scroll (y en iOS directamente no funciona).
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -20;
+  pointer-events: none;
   background-image: radial-gradient(circle at 15% 0%, rgba(59, 130, 246, 0.12), transparent 45%),
     radial-gradient(circle at 85% 15%, rgba(124, 58, 237, 0.12), transparent 45%);
-  background-attachment: fixed;
+  transform: translateZ(0);
 }
 
 ::selection {
@@ -56,6 +71,7 @@ body {
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
 }
 
@@ -63,7 +79,37 @@ body {
   @apply outline-none focus-visible:ring-2 focus-visible:ring-brand-blue focus-visible:ring-offset-2 focus-visible:ring-offset-base-950;
 }
 
+/* Carruseles horizontales sin barra visible (barra de rubros, filtros). */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Desvanece los bordes de un carrusel para indicar que hay más contenido. */
+.edge-fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 28px), transparent);
+}
+
+/* Borde degradado del plan premium: el degradado se desplaza, no se repinta el contenido. */
+.plan-premium {
+  background: linear-gradient(120deg, #22d3ee, #3b82f6, #7c3aed, #fcd34d, #22d3ee);
+  background-size: 300% 100%;
+  animation: border-flow 9s linear infinite;
+}
+
+@keyframes border-flow {
+  to {
+    background-position: 300% 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {

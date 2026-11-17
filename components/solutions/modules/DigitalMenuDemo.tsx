@@ -51,7 +51,7 @@ export default function DigitalMenuDemo() {
   };
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-center">
+    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center">
       <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-6 text-center shadow-card">
         <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-slate-500">
           <QrCode className="h-3.5 w-3.5" aria-hidden="true" /> Soporte de mesa

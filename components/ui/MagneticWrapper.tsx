@@ -1,6 +1,6 @@
 "use client";
 
-import { type MouseEvent, type ReactNode } from "react";
+import { type PointerEvent, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 
 export default function MagneticWrapper({
@@ -22,7 +22,8 @@ export default function MagneticWrapper({
     return <span className={className}>{children}</span>;
   }
 
-  const handleMouseMove = (e: MouseEvent<HTMLSpanElement>) => {
+  const handleMouseMove = (e: PointerEvent<HTMLSpanElement>) => {
+    if (e.pointerType !== "mouse") return;
     const rect = e.currentTarget.getBoundingClientRect();
     const relX = e.clientX - (rect.left + rect.width / 2);
     const relY = e.clientY - (rect.top + rect.height / 2);
@@ -37,8 +38,8 @@ export default function MagneticWrapper({
 
   return (
     <motion.span
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onPointerMove={handleMouseMove}
+      onPointerLeave={handleMouseLeave}
       style={{ x: springX, y: springY, display: "inline-block" }}
       className={className}
     >

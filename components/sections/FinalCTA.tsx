@@ -6,9 +6,11 @@ import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import AuroraBackground from "@/components/ui/AuroraBackground";
 import MagneticWrapper from "@/components/ui/MagneticWrapper";
-import { WHATSAPP_DEFAULT_LINK } from "@/lib/constants";
+import { useIndustry } from "@/components/industry/IndustryContext";
+import { openExternal } from "@/lib/motion";
 
 export default function FinalCTA() {
+  const { whatsappLink } = useIndustry();
   const scrollToForm = () => document.getElementById("diagnostico")?.scrollIntoView({ behavior: "smooth" });
 
   return (
@@ -19,13 +21,13 @@ export default function FinalCTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-brand-blue/15 via-base-900 to-brand-purple/15 p-10 text-center shadow-card sm:p-16"
+          className="relative isolate overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-brand-blue/15 via-base-900 to-brand-purple/15 p-10 text-center shadow-card sm:p-16"
         >
           <AuroraBackground palette="blue" showNet intensity={1} showGrid={false} />
           <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
           <h2 className="relative text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-            Tu restaurante no necesita trabajar más.
+            Tu equipo no necesita trabajar más.
             <br />
             <span className="text-gradient">Necesita trabajar mejor.</span>
           </h2>
@@ -42,7 +44,7 @@ export default function FinalCTA() {
               </Button>
             </MagneticWrapper>
             <MagneticWrapper strength={0.3}>
-              <Button size="lg" variant="secondary" onClick={() => window.open(WHATSAPP_DEFAULT_LINK, "_blank")}>
+              <Button size="lg" variant="secondary" onClick={() => openExternal(whatsappLink)}>
                 <MessageCircle className="h-4 w-4" />
                 Hablar por WhatsApp
               </Button>

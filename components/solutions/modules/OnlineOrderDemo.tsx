@@ -73,7 +73,7 @@ export default function OnlineOrderDemo() {
   };
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_auto_1fr] lg:items-start">
+    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-start">
       <PhoneMockup height={480}>
         <div className="flex h-full flex-col bg-base-950">
           <div className="border-b border-white/10 bg-gradient-to-r from-brand-blue/20 to-brand-purple/20 px-3.5 py-3">

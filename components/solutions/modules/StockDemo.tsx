@@ -19,7 +19,7 @@ export default function StockDemo() {
   }, [state.orders]);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
       <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.015] p-5 shadow-card">
         <div className="mb-4 flex items-center justify-between">
           <p className="text-sm font-bold text-white">Ingredientes — {state.name}</p>

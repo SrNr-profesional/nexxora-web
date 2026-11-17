@@ -8,20 +8,20 @@ import SectionHeading from "@/components/ui/SectionHeading";
 
 const FAQS = [
   {
-    q: "¿El sistema funciona para cualquier tipo de restaurante?",
-    a: "Sí. Se adapta a restaurantes, hamburgueserías, pizzerías, cafeterías, bares, sushi, comida rápida, rotiserías y otros formatos gastronómicos.",
+    q: "¿Trabajan con cualquier rubro?",
+    a: "Sí. Tenemos soluciones armadas para gastronomía, logística y transporte, retail, industria, construcción, agro y bodegas, salud, barrios y consorcios, hotelería y minería. Si tu rubro no está en la lista, igual hacemos el diagnóstico y diseñamos la solución a medida.",
   },
   {
     q: "¿Necesito cambiar todo mi método de trabajo?",
     a: "No. El sistema se adapta a tu operación actual y se incorpora de forma gradual, sin necesidad de cambiar todo de golpe.",
   },
   {
-    q: "¿Se puede empezar solamente con un menú digital?",
-    a: "Sí. Podés comenzar con una sola función, como el menú digital, e ir sumando módulos a medida que lo necesites.",
+    q: "¿Se puede empezar con una sola función?",
+    a: "Sí. Podés comenzar digitalizando un solo proceso e ir sumando módulos, automatizaciones con IA o cámaras a medida que lo necesites.",
   },
   {
     q: "¿El sistema funciona desde el celular?",
-    a: "Sí. Tanto la vista del cliente como el panel administrativo están pensados para usarse desde el celular.",
+    a: "Sí. Los paneles y las alertas están pensados para usarse desde el celular, además de la computadora.",
   },
   {
     q: "¿Se puede utilizar en varias sucursales?",
@@ -29,7 +29,7 @@ const FAQS = [
   },
   {
     q: "¿Se puede integrar con WhatsApp?",
-    a: "Sí. Se puede integrar como canal de contacto y notificaciones dentro del flujo de pedidos.",
+    a: "Sí. Se usa como canal de atención, de notificaciones y de alertas, incluyendo las que generan las cámaras.",
   },
   {
     q: "¿El personal necesita conocimientos técnicos?",
@@ -45,7 +45,19 @@ const FAQS = [
   },
   {
     q: "¿Cómo se define el precio?",
-    a: "El valor depende de las funciones, la cantidad de sucursales y el nivel de personalización. Primero realizamos un diagnóstico para evitar que pagues por herramientas que no necesitás.",
+    a: "El valor depende de las funciones, la cantidad de sedes y cámaras y el nivel de personalización. Primero realizamos un diagnóstico para evitar que pagues por herramientas que no necesitás.",
+  },
+  {
+    q: "¿Qué es Visión IA con cámaras?",
+    a: "Es inteligencia artificial que analiza en tiempo real el video de tus cámaras y te avisa cuando ocurre algo que definimos juntos: una persona sin casco, una góndola vacía, un vehículo no autorizado, una fila demasiado larga. Es nuestro plan más completo.",
+  },
+  {
+    q: "¿Necesito comprar cámaras nuevas?",
+    a: "No siempre. Si ya tenés cámaras IP con buena ubicación y calidad de imagen, las aprovechamos. En el diagnóstico revisamos cuáles sirven y, si hace falta sumar alguna, te indicamos cuál y dónde.",
+  },
+  {
+    q: "¿Qué pasa con la privacidad de las personas filmadas?",
+    a: "Cada implementación se configura según la normativa de protección de datos personales: cartelería, zonas que no se analizan, plazos de guardado y acceso restringido a las imágenes. Siempre que es posible trabajamos con detecciones anónimas (conteo, presencia, EPP) sin identificar personas.",
   },
 ];
 

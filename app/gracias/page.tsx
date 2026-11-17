@@ -62,7 +62,7 @@ export default function GraciasPage() {
           transition={{ delay: 0.1 }}
           className="text-3xl font-bold text-white sm:text-4xl"
         >
-          Recibimos el diagnóstico de tu restaurante
+          Recibimos el diagnóstico de tu negocio
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 16 }}
@@ -81,7 +81,7 @@ export default function GraciasPage() {
             className="mt-8 w-full space-y-3 rounded-xl2 glass p-6 text-left"
           >
             {summary.restaurantName && (
-              <SummaryRow label="Restaurante" value={summary.restaurantName} />
+              <SummaryRow label="Negocio" value={summary.restaurantName} />
             )}
             {summary.mainProblem && <SummaryRow label="Principal problema" value={summary.mainProblem} />}
             {summary.desiredFeatures && summary.desiredFeatures.length > 0 && (

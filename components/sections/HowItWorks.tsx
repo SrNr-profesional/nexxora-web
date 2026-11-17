@@ -1,16 +1,19 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { CheckCircle2, ArrowRight, Tablet, ChefHat, GraduationCap, Headset } from "lucide-react";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { CheckCircle2, ArrowRight, Tablet, UsersRound, GraduationCap, Headset } from "lucide-react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
+import { useIndustry } from "@/components/industry/IndustryContext";
+import { EASE_OUT } from "@/lib/motion";
 
-const CHECKLIST_ITEMS = ["Pedidos", "Cocina", "Stock", "Caja"];
-const MODULES = ["Menú", "Cocina", "Stock", "Panel"];
+
+
 
 function ChecklistVisual() {
+  const CHECKLIST_ITEMS = useIndustry().industry.chain.slice(0, 4);
   return (
     <div className="mt-4 space-y-2">
       {CHECKLIST_ITEMS.map((item, i) => (
@@ -31,6 +34,7 @@ function ChecklistVisual() {
 }
 
 function ModulesVisual() {
+  const MODULES = useIndustry().industry.chain.slice(1, 5);
   return (
     <div className="mt-4">
       <div className="flex flex-wrap gap-2">
@@ -57,20 +61,20 @@ function ProgressVisual() {
     <div className="mt-4">
       <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
         <motion.div
-          initial={{ width: "0%" }}
-          whileInView={{ width: "82%" }}
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 0.82 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.15, ease: "easeOut" }}
-          className="h-full rounded-full bg-brand-gradient"
+          className="h-full origin-left rounded-full bg-brand-gradient"
         />
       </div>
-      <p className="mt-2.5 text-xs text-slate-500">Productos, flujos, permisos y reportes configurados.</p>
+      <p className="mt-2.5 text-xs text-slate-500">Datos, flujos, permisos y reportes configurados.</p>
     </div>
   );
 }
 
 function LaunchVisual() {
-  const icons = [Tablet, ChefHat, GraduationCap, Headset];
+  const icons = [Tablet, UsersRound, GraduationCap, Headset];
   return (
     <div className="mt-4 flex gap-2.5">
       {icons.map((Icon, i) => (
@@ -92,7 +96,7 @@ function LaunchVisual() {
 const STEPS = [
   {
     title: "Entendemos tu operación",
-    text: "Analizamos cómo recibís pedidos, cómo trabaja cocina, cómo controlás el stock y dónde se generan errores o demoras.",
+    text: "Relevamos cómo trabaja hoy cada área, qué información se pierde en el camino y dónde se generan errores, demoras o costos evitables.",
     Visual: ChecklistVisual,
   },
   {
@@ -102,7 +106,7 @@ const STEPS = [
   },
   {
     title: "Adaptamos el sistema",
-    text: "Configuramos productos, flujos, permisos, reportes y funcionamiento según tu operación.",
+    text: "Configuramos datos, flujos, permisos, reportes y, si aplica, las detecciones de las cámaras según tu operación.",
     Visual: ProgressVisual,
   },
   {
@@ -116,14 +120,15 @@ export default function HowItWorks() {
   const scrollToForm = () => document.getElementById("diagnostico")?.scrollIntoView({ behavior: "smooth" });
   const timelineRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: timelineRef, offset: ["start 0.75", "end 0.4"] });
-  const lineProgress = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const lineProgress = useSpring(scrollYProgress, { stiffness: 140, damping: 28, mass: 0.4 });
+  const { industry } = useIndustry();
 
   return (
     <section id="como-funciona" className="relative py-24 sm:py-32">
       <Container>
         <SectionHeading
           eyebrow="Proceso"
-          title="Cómo implementamos Nexxora en tu restaurante"
+          title={`Cómo implementamos Nexxora en ${industry.noun}`}
           description="No instalamos un sistema genérico. Primero entendemos cómo funciona tu negocio y después adaptamos la solución."
         />
 
@@ -139,10 +144,10 @@ export default function HowItWorks() {
             {STEPS.map((step, i) => (
               <motion.div
                 key={step.title}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -24 : 24 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.6, ease: EASE_OUT }}
                 className={`relative flex items-start gap-5 lg:w-1/2 ${
                   i % 2 === 0 ? "lg:pr-12" : "lg:ml-auto lg:pl-12"
                 }`}

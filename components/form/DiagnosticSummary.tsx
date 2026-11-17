@@ -23,7 +23,7 @@ function Row({ label, value }: { label: string; value?: string | string[] }) {
 function SummaryBody({ values }: { values: Partial<DiagnosticSchema> }) {
   return (
     <div className="space-y-3.5">
-      <Row label="Restaurante" value={values.restaurantName} />
+      <Row label="Negocio" value={values.restaurantName} />
       <Row label="Tipo de negocio" value={values.businessType} />
       <Row label="Problemas" value={values.problems} />
       <Row label="Soluciones de interés" value={values.desiredFeatures} />

@@ -1,17 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { Menu, X, MessageCircle } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import { NAV_LINKS, WHATSAPP_DEFAULT_LINK } from "@/lib/constants";
+import { useIndustryOptional } from "@/components/industry/IndustryContext";
+import { openExternal } from "@/lib/motion";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [activeHref, setActiveHref] = useState("#inicio");
+  const [activeHref, setActiveHref] = useState("");
+  const pathname = usePathname();
+  const industryCtx = useIndustryOptional();
+  const industryId = industryCtx?.industry.id;
+  const whatsappLink = industryCtx?.whatsappLink ?? WHATSAPP_DEFAULT_LINK;
+  // Fuera de la home (legales) los anclajes tienen que volver a "/".
+  const isHome = pathname === "/";
+  const toHref = (hash: string) => (isHome ? hash : `/${hash}`);
+
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 180, damping: 30, mass: 0.3 });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -41,7 +54,8 @@ export default function Header() {
 
     sections.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+    // industryId: la sección #soluciones se reemplaza al cambiar de rubro.
+  }, [industryId, isHome]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -52,7 +66,9 @@ export default function Header() {
 
   const scrollToForm = () => {
     setOpen(false);
-    document.getElementById("diagnostico")?.scrollIntoView({ behavior: "smooth" });
+    const form = document.getElementById("diagnostico");
+    if (form) form.scrollIntoView({ behavior: "smooth" });
+    else window.location.href = "/#diagnostico";
   };
 
   return (
@@ -63,12 +79,19 @@ export default function Header() {
           : "border-white/[0.04] bg-base-950/40 backdrop-blur-md"
       }`}
     >
+      {/* Progreso de lectura: solo transform (scaleX), sin layout ni repaint */}
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-0.5 origin-left bg-brand-gradient"
+        style={{ scaleX: progress }}
+      />
+
       <Container
         className={`flex items-center justify-between transition-all duration-300 ${
           scrolled ? "h-14 py-2.5" : "h-16 py-3.5"
         }`}
       >
-        <a href="#inicio" aria-label="Nexxora - Inicio">
+        <a href={toHref("#inicio")} aria-label="Nexxora - Inicio" className="focus-ring rounded-lg">
           <Logo />
         </a>
 
@@ -78,8 +101,8 @@ export default function Header() {
             return (
               <a
                 key={link.href}
-                href={link.href}
-                className={`focus-ring relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                href={toHref(link.href)}
+                className={`focus-ring relative whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition-colors xl:px-4 ${
                   isActive ? "text-white" : "text-slate-300 hover:text-white"
                 }`}
                 aria-current={isActive ? "true" : undefined}
@@ -102,12 +125,12 @@ export default function Header() {
             variant="ghost"
             size="sm"
             className="border border-[#25D366]/25 bg-[#25D366]/[0.06] text-[#7fe3a8] hover:bg-[#25D366]/[0.12] hover:text-white"
-            onClick={() => window.open(WHATSAPP_DEFAULT_LINK, "_blank")}
+            onClick={() => openExternal(whatsappLink)}
           >
             <MessageCircle className="h-4 w-4" />
-            WhatsApp
+            <span className="hidden xl:inline">WhatsApp</span>
           </Button>
-          <Button variant="primary" size="sm" onClick={scrollToForm}>
+          <Button variant="primary" size="sm" className="whitespace-nowrap" onClick={scrollToForm}>
             Diagnóstico gratuito
           </Button>
         </div>
@@ -137,7 +160,7 @@ export default function Header() {
                 return (
                   <a
                     key={link.href}
-                    href={link.href}
+                    href={toHref(link.href)}
                     onClick={() => setOpen(false)}
                     className={`focus-ring rounded-lg px-3 py-3 text-base font-medium transition-colors ${
                       isActive ? "bg-white/5 text-white" : "text-slate-200 hover:bg-white/5"
@@ -151,7 +174,7 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   className="border border-[#25D366]/25 bg-[#25D366]/[0.06] text-[#7fe3a8] hover:bg-[#25D366]/[0.12] hover:text-white"
-                  onClick={() => window.open(WHATSAPP_DEFAULT_LINK, "_blank")}
+                  onClick={() => openExternal(whatsappLink)}
                 >
                   <MessageCircle className="h-4 w-4" />
                   Hablar por WhatsApp
