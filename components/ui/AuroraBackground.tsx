@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { useId, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const PALETTES = {
@@ -10,6 +10,17 @@ const PALETTES = {
   blue: ["rgba(59,130,246,0.14)", "rgba(34,211,238,0.1)"],
 } as const;
 
+/**
+ * Fondo decorativo de sección con parallax suave.
+ *
+ * Rendimiento: los halos son degradados radiales que ya se difuminan solos,
+ * así que NO llevan `filter: blur()`. Antes cada halo (hasta 900×520px, tres
+ * por sección, cinco secciones) se difuminaba por GPU y además se movía con
+ * el scroll, que era el mayor costo de pintado de toda la página.
+ *
+ * La sección que lo contiene debe tener `relative isolate` para que el
+ * `-z-10` quede detrás de su contenido y no detrás del fondo de la página.
+ */
 export default function AuroraBackground({
   palette = "cyan",
   showGrid = true,
@@ -23,39 +34,37 @@ export default function AuroraBackground({
   intensity?: number;
   className?: string;
 }) {
-  const prefersReducedMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
+  const gradientId = useId();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const [colorA, colorB] = PALETTES[palette];
 
-  const yA = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [-60, 60]);
-  const yB = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [40, -40]);
+  const yA = useTransform(scrollYProgress, [0, 1], [-60, 60]);
+  const yB = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
     <div ref={ref} aria-hidden="true" className={cn("pointer-events-none absolute inset-0 -z-10 overflow-hidden", className)}>
       {showGrid && <div className="absolute inset-0 grid-overlay opacity-70" />}
 
       <motion.div
-        style={{ y: yA }}
-        className="absolute -top-40 left-1/2 h-[520px] w-[900px] -translate-x-1/2 rounded-full blur-3xl"
-      >
-        <div
-          className="h-full w-full rounded-full"
-          style={{ background: `radial-gradient(circle, ${colorA}, transparent 60%)`, opacity: intensity }}
-        />
-      </motion.div>
+        style={{
+          y: yA,
+          x: "-50%",
+          opacity: intensity,
+          background: `radial-gradient(closest-side, ${colorA}, transparent)`,
+        }}
+        className="absolute -top-56 left-1/2 h-[680px] w-[1100px] max-w-none will-change-transform"
+      />
 
       <motion.div
-        style={{ y: yB }}
-        className="absolute top-24 right-[6%] h-72 w-72 rounded-full blur-3xl"
-      >
-        <div
-          className="h-full w-full rounded-full"
-          style={{ background: `radial-gradient(circle, ${colorB}, transparent 60%)`, opacity: intensity }}
-        />
-      </motion.div>
+        style={{ y: yB, opacity: intensity, background: `radial-gradient(closest-side, ${colorB}, transparent)` }}
+        className="absolute right-[2%] top-16 h-[420px] w-[420px] will-change-transform"
+      />
 
-      <div className="absolute -top-10 left-[8%] h-64 w-64 rounded-full bg-brand-cyan/10 blur-3xl" style={{ opacity: intensity }} />
+      <div
+        className="absolute -top-16 left-[4%] h-[380px] w-[380px]"
+        style={{ opacity: intensity, background: "radial-gradient(closest-side, rgba(34,211,238,0.10), transparent)" }}
+      />
 
       {showNet && (
         <svg
@@ -65,12 +74,12 @@ export default function AuroraBackground({
           preserveAspectRatio="xMidYMid slice"
         >
           <defs>
-            <linearGradient id="aurora-net-line" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="#22d3ee" />
               <stop offset="100%" stopColor="#7c3aed" />
             </linearGradient>
           </defs>
-          <g stroke="url(#aurora-net-line)" strokeWidth="1">
+          <g stroke={`url(#${gradientId})`} strokeWidth="1">
             <line x1="80" y1="120" x2="320" y2="60" />
             <line x1="320" y1="60" x2="560" y2="150" />
             <line x1="560" y1="150" x2="820" y2="70" />

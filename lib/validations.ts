@@ -3,8 +3,8 @@ import { z } from "zod";
 export const diagnosticSchema = z.object({
   // Paso 1 - Información del negocio
   fullName: z.string().trim().min(3, "Ingresá tu nombre y apellido."),
-  role: z.string().trim().min(2, "Contanos tu cargo o relación con el restaurante."),
-  restaurantName: z.string().trim().min(2, "Ingresá el nombre del restaurante."),
+  role: z.string().trim().min(2, "Contanos tu cargo o relación con el negocio."),
+  restaurantName: z.string().trim().min(2, "Ingresá el nombre del negocio."),
   city: z.string().trim().min(2, "Ingresá tu ciudad."),
   phone: z
     .string()

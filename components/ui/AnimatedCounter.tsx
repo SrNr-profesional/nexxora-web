@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, animate } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { useInView, useReducedMotion, animate } from "framer-motion";
 
+/**
+ * Contador animado. Escribe el número directo en el DOM en cada frame en vez
+ * de usar estado de React (antes provocaba ~60 re-renders por segundo).
+ */
 export default function AnimatedCounter({
   value,
   prefix = "",
@@ -20,30 +24,35 @@ export default function AnimatedCounter({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
-  const [display, setDisplay] = useState("0");
+  const prefersReducedMotion = useReducedMotion();
+
+  const format = (n: number) =>
+    `${prefix}${n.toLocaleString("es-AR", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    })}${suffix}`;
 
   useEffect(() => {
-    if (!isInView) return;
+    const el = ref.current;
+    if (!el || !isInView) return;
+    if (prefersReducedMotion) {
+      el.textContent = format(value);
+      return;
+    }
     const controls = animate(0, value, {
       duration,
       ease: [0.16, 1, 0.3, 1],
-      onUpdate(latest) {
-        setDisplay(
-          latest.toLocaleString("es-AR", {
-            minimumFractionDigits: decimals,
-            maximumFractionDigits: decimals,
-          })
-        );
+      onUpdate: (latest) => {
+        el.textContent = format(latest);
       },
     });
     return () => controls.stop();
-  }, [isInView, value, duration, decimals]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInView, value, duration, decimals, prefix, suffix, prefersReducedMotion]);
 
   return (
-    <motion.span ref={ref} className={className}>
-      {prefix}
-      {display}
-      {suffix}
-    </motion.span>
+    <span ref={ref} className={className} style={{ fontVariantNumeric: "tabular-nums" }}>
+      {format(0)}
+    </span>
   );
 }

@@ -54,14 +54,14 @@ function SolutionsPanel() {
         <DemoResetButton />
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[260px_1fr]">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
         <SolutionNavigation active={activeModule} onChange={setActiveModule} />
 
         <TiltCard maxTilt={3} className="min-h-[560px] lg:min-h-[600px]">
           <div className="relative h-full min-h-[560px] overflow-hidden rounded-[1.75rem] border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-5 shadow-[0_24px_70px_-20px_rgba(0,0,0,0.55)] sm:p-7 lg:min-h-[600px]">
             <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
-            <div aria-hidden="true" className="pointer-events-none absolute -top-16 right-10 h-48 w-48 rounded-full bg-brand-blue/15 blur-3xl transition-all duration-700" />
-            <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-10 h-48 w-48 rounded-full bg-brand-purple/15 blur-3xl transition-all duration-700" />
+            <div aria-hidden="true" className="pointer-events-none absolute -top-16 right-10 h-48 w-48 rounded-full bg-brand-blue/15 blur-3xl" />
+            <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-10 h-48 w-48 rounded-full bg-brand-purple/15 blur-3xl" />
 
             <NoticeToast />
 
@@ -73,11 +73,10 @@ function SolutionsPanel() {
                 id={`solution-panel-${activeModule}`}
                 role="tabpanel"
                 aria-labelledby={`solution-tab-${activeModule}`}
-                initial={{ opacity: 0, y: 16, rotateX: 6, scale: 0.98, filter: "blur(4px)" }}
-                animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -10, rotateX: -4, scale: 0.99, filter: "blur(4px)" }}
-                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                style={{ transformStyle: "preserve-3d" }}
+                initial={{ opacity: 0, y: 14, scale: 0.985 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.99, transition: { duration: 0.18 } }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className="relative"
               >
                 <ActiveComponent />
@@ -94,7 +93,7 @@ export default function RestaurantSolutionsSection() {
   const scrollToForm = () => document.getElementById("diagnostico")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section id="soluciones" className="relative py-24 sm:py-32">
+    <section id="soluciones" className="relative isolate py-24 sm:py-32">
       <AuroraBackground palette="purple" intensity={0.7} />
       <Container>
         <SectionHeading
@@ -136,7 +135,7 @@ export default function RestaurantSolutionsSection() {
               </Button>
             </MagneticWrapper>
             <MagneticWrapper strength={0.25}>
-              <Button variant="secondary" onClick={() => window.open(WHATSAPP_DEFAULT_LINK, "_blank")}>
+              <Button variant="secondary" onClick={() => window.open(WHATSAPP_DEFAULT_LINK, "_blank", "noopener,noreferrer")}>
                 <MessageCircle className="h-4 w-4" />
                 Hablar por WhatsApp
               </Button>

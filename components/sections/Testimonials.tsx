@@ -5,15 +5,17 @@ import { Sparkles } from "lucide-react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AuroraBackground from "@/components/ui/AuroraBackground";
+import { useIndustry } from "@/components/industry/IndustryContext";
 
 export default function Testimonials() {
   const prefersReducedMotion = useReducedMotion();
+  const { industry } = useIndustry();
 
   return (
-    <section className="relative py-24 sm:py-28">
+    <section className="relative isolate py-24 sm:py-28">
       <AuroraBackground palette="purple" intensity={0.5} showGrid={false} />
       <Container>
-        <SectionHeading eyebrow="Casos de uso" title="¿Qué podríamos analizar en tu restaurante?" />
+        <SectionHeading eyebrow="Casos de uso" title={`¿Qué podríamos analizar en ${industry.noun}?`} />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -34,7 +36,7 @@ export default function Testimonials() {
             Próximamente: casos de implementación y resultados de nuestros clientes.
           </p>
           <p className="mt-3 text-sm text-slate-500">
-            Mientras tanto, contanos cómo funciona tu restaurante y te mostramos qué partes de tu operación
+            Mientras tanto, contanos cómo funciona {industry.noun} y te mostramos qué partes de la operación
             podrían automatizarse.
           </p>
         </motion.div>
