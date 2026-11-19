@@ -1,38 +1,48 @@
 import { z } from "zod";
 
+// Un campo que nunca se tocó llega como `undefined`, y ahí zod responde "Required" (en inglés) en lugar
+// del mensaje del campo. Estos atajos usan el mismo mensaje también para ese caso.
+const str = (message: string) => z.string({ required_error: message, invalid_type_error: message });
+
+/** Texto libre obligatorio, con un mínimo de caracteres. */
+const text = (min: number, message: string) => str(message).trim().min(min, message);
+
+/** Una opción elegida de una lista (chips o desplegable). */
+const choice = (message = "Seleccioná una opción.") => str(message).min(1, message);
+
+/** Lista con al menos una opción elegida. */
+const choices = (message: string) =>
+  z.array(z.string(), { required_error: message, invalid_type_error: message }).min(1, message);
+
 export const diagnosticSchema = z.object({
   // Paso 1 - Información del negocio
-  fullName: z.string().trim().min(3, "Ingresá tu nombre y apellido."),
-  role: z.string().trim().min(2, "Contanos tu cargo o relación con el negocio."),
-  restaurantName: z.string().trim().min(2, "Ingresá el nombre del negocio."),
-  city: z.string().trim().min(2, "Ingresá tu ciudad."),
-  phone: z
-    .string()
-    .trim()
-    .min(6, "Ingresá un teléfono válido.")
-    .regex(/^[\d\s+()-]+$/, "Ingresá un teléfono válido."),
-  email: z.string().trim().email("Ingresá un email válido."),
+  fullName: text(3, "Ingresá tu nombre y apellido."),
+  role: text(2, "Contanos tu cargo o relación con el negocio."),
+  restaurantName: text(2, "Ingresá el nombre del negocio."),
+  city: text(2, "Ingresá tu ciudad."),
+  phone: text(6, "Ingresá un teléfono válido.").regex(/^[\d\s+()-]+$/, "Ingresá un teléfono válido."),
+  email: str("Ingresá un email válido.").trim().email("Ingresá un email válido."),
   instagram: z.string().trim().optional(),
-  branchesCount: z.string().min(1, "Seleccioná una opción."),
+  branchesCount: choice(),
 
   // Paso 2 - Operación actual
-  dailyOrders: z.string().min(1, "Seleccioná una opción."),
-  employeesCount: z.string().min(1, "Seleccioná una opción."),
-  businessType: z.string().min(1, "Seleccioná un tipo de negocio."),
-  orderChannels: z.array(z.string()).min(1, "Seleccioná al menos una opción."),
-  currentSystem: z.string().min(1, "Seleccioná una opción."),
+  dailyOrders: choice(),
+  employeesCount: choice(),
+  businessType: choice("Seleccioná un tipo de negocio."),
+  orderChannels: choices("Seleccioná al menos una opción."),
+  currentSystem: choice(),
 
   // Paso 3 - Problemas
-  problems: z.array(z.string()).min(1, "Seleccioná al menos un problema."),
-  mainProblem: z.string().trim().min(5, "Contanos brevemente cuál es el principal problema."),
+  problems: choices("Seleccioná al menos un problema."),
+  mainProblem: text(5, "Contanos brevemente cuál es el principal problema."),
 
   // Paso 4 - Funciones deseadas
-  desiredFeatures: z.array(z.string()).min(1, "Seleccioná al menos una función."),
+  desiredFeatures: choices("Seleccioná al menos una función."),
 
   // Paso 5 - Prioridad y contacto
-  urgency: z.string().min(1, "Seleccioná una opción."),
-  bestContactTime: z.string().trim().min(2, "Indicá un horario aproximado."),
-  contactPreference: z.string().min(1, "Seleccioná una opción."),
+  urgency: choice(),
+  bestContactTime: text(2, "Indicá un horario aproximado."),
+  contactPreference: choice(),
   extraComments: z.string().trim().optional(),
   acceptsPrivacyPolicy: z.literal(true, {
     errorMap: () => ({ message: "Debés aceptar la política de privacidad para continuar." }),

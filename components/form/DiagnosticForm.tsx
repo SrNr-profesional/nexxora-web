@@ -170,7 +170,14 @@ export default function DiagnosticForm() {
         <DiagnosticSummary values={values} variant="collapsible" />
         <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={(e) => {
+            // El diagnóstico solo se envía desde el último paso.
+            if (step < TOTAL_STEPS) {
+              e.preventDefault();
+              return;
+            }
+            void handleSubmit(onSubmit)(e);
+          }}
           className="rounded-[1.75rem] glass-strong p-6 shadow-card sm:p-10"
           noValidate
         >
@@ -437,12 +444,14 @@ export default function DiagnosticForm() {
               <span />
             )}
 
+            {/* Cada botón lleva su propia key: sin ella React reutiliza el mismo <button>, y el clic en
+                "Siguiente" que lleva al último paso termina enviando el formulario. */}
             {step < TOTAL_STEPS ? (
-              <Button type="button" onClick={goNext}>
+              <Button key="next" type="button" onClick={goNext}>
                 Siguiente <ArrowRight className="h-4 w-4" />
               </Button>
             ) : (
-              <Button type="submit" disabled={submitting}>
+              <Button key="submit" type="submit" disabled={submitting}>
                 {submitting ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" /> Enviando...
